@@ -1,0 +1,32 @@
+{
+  "index": 528,
+  "phase": 2,
+  "batch": 59,
+  "name": "parity-model-train-yard",
+  "planned_name": "parity-model-train-yard",
+  "language": "Haskell",
+  "category": "ML utilities",
+  "goal": "Create a Haskell reference implementation for train workflows, centered on storage recovery, log and snapshot fixtures, and replay consistency checks.",
+  "repository_url": "https://github.com/ZachL111/parity-model-train-yard",
+  "verification_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1",
+  "model": {
+    "inputs": [
+      "demand",
+      "capacity",
+      "latency",
+      "risk",
+      "weight"
+    ],
+    "threshold": 183,
+    "risk_penalty": 4,
+    "latency_penalty": 4,
+    "weight_bonus": 2,
+    "decision_rule": "accept when score is greater than or equal to threshold, otherwise review"
+  },
+  "quality_gates": [
+    "readme constraint scan",
+    "fixture presence check",
+    "metadata JSON parse",
+    "language verifier"
+  ]
+}
