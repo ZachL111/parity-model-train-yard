@@ -1,0 +1,17 @@
+{
+  "repo": "parity-model-train-yard",
+  "thresholds": {
+    "signal": 2,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 4,
+    "ship": 181,
+    "watch": 103
+  },
+  "terms": [
+    "feature drift",
+    "window width",
+    "metric stability",
+    "explainability"
+  ]
+}
