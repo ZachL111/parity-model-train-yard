@@ -1,68 +1,40 @@
 # parity-model-train-yard
 
-`parity-model-train-yard` packages a practical ml utilities exercise in Haskell. The emphasis is on deterministic behavior, a small public API, and examples that explain the tradeoffs.
+`parity-model-train-yard` keeps a focused Haskell implementation around ml utilities. The project goal is to create a Haskell reference implementation for train workflows, centered on storage recovery, log and snapshot fixtures, and replay consistency checks.
 
-## How I Read Parity Model Train Yard
+## Reason For The Project
 
-The useful thing to inspect here is how the same score rule is represented in code, metadata, and examples. If those three pieces disagree, the audit script should make the drift visible.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Problem Shape
+## Parity Model Train Yard Review Notes
 
-This project keeps the domain idea close to the tests. That makes it useful as a reference implementation, a small experiment, or a starting point for a more specialized tool.
+Start with `window width` and `feature drift`. Those cases create the widest score spread in this repo, so they are the best quick check when the model changes.
 
-## Main Behaviors
+## What It Does
 
-- Models feature signals with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep metric checks changes visible in code review.
-- Includes extended examples for windowed behavior, including `surge` and `degraded`.
-- Documents explainable outputs tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
+- `fixtures/domain_review.csv` adds cases for feature drift and window width.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/parity-model-train-walkthrough.md` walks through the case spread.
+- The Haskell code includes a review path for `window width` and `feature drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Internal Model
+## How It Is Put Together
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps feature signals, metric checks, and windowed behavior in one explicit decision path. The threshold is 183, with risk penalty 4, latency penalty 4, and weight bonus 2. The Haskell code keeps the pure scoring function isolated so tests can check it without setup.
+The implementation keeps the scoring rule plain: reward signal and confidence, preserve slack, penalize drag, then classify the result into a review lane.
 
-## Repository Map
+The added Haskell path is deliberately direct, with fixtures doing most of the explaining.
 
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Run It Locally
-
-Clone the repository, enter the directory, and run the verifier. No database server, cloud account, or token is required.
-
-## How To Run It
+## Run It
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Check It
 
-## Validation
+The verifier is intentionally local. It should fail if the fixture score math, lane assignment, or language-specific test drifts.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Boundaries
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Scenario Walkthrough
-
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
-
-## Known Edges
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
-
-## Follow-Up Work
-
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add one more ml utilities fixture that focuses on a malformed or borderline input.
+No external service is required. A deeper version would add more negative cases and a clearer boundary around invalid input.

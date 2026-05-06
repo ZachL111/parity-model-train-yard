@@ -1,0 +1,73 @@
+{
+  "repo": "parity-model-train-yard",
+  "language": "Haskell",
+  "category": "ML utilities",
+  "goal": "Create a Haskell reference implementation for train workflows, centered on storage recovery, log and snapshot fixtures, and replay consistency checks.",
+  "review_model": {
+    "terms": [
+      "feature drift",
+      "window width",
+      "metric stability",
+      "explainability"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "feature drift",
+      "signal": 69,
+      "slack": 50,
+      "drag": 10,
+      "confidence": 82,
+      "score": 240,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "window width",
+      "signal": 72,
+      "slack": 43,
+      "drag": 8,
+      "confidence": 91,
+      "score": 254,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "metric stability",
+      "signal": 70,
+      "slack": 52,
+      "drag": 32,
+      "confidence": 69,
+      "score": 165,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "explainability",
+      "signal": 82,
+      "slack": 41,
+      "drag": 19,
+      "confidence": 88,
+      "score": 236,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "feature drift",
+      "signal": 56,
+      "slack": 38,
+      "drag": 22,
+      "confidence": 68,
+      "score": 152,
+      "lane": "ship"
+    }
+  ]
+}

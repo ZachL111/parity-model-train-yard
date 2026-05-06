@@ -1,4 +1,5 @@
 import PortfolioCore
+import DomainReview
 
 expect :: Bool -> IO ()
 expect True = pure ()
@@ -15,3 +16,6 @@ main = do
   let signalcase_3 = Signal 75 82 8 17 7
   expect (score signalcase_3 == 146)
   expect (classify signalcase_3 == "review")
+  let domainReview = ReviewItem 69 50 10 82
+  expect (reviewScore domainReview == 240)
+  expect (reviewLane domainReview == "ship")
